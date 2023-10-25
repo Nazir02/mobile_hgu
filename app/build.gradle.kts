@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "tj.mobile_hgu"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "tj.mobile_hgu"
         minSdk = 21
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 

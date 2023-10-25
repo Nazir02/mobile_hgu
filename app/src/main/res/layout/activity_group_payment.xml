@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F8F8F8">
+
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/tool_bar" />
+
+    <FrameLayout
+        android:id="@+id/flSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/search"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/rounded_border_edittext"
+                    android:drawableStart="@drawable/search_serv"
+                    android:focusableInTouchMode="true"
+                    android:hint="Поиск"
+                    android:maxLines="1"
+                    android:padding="6dp"
+                    android:textColor="@color/black"
+                    tools:ignore="Autofill,HardcodedText,TextFields" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/calc_clear_txt_Prise"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/clear_text"
+                    tools:ignore="RtlHardcoded" />
+
+            </FrameLayout>
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/flSearch"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="50dp"
+        android:foregroundGravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <ListView
+        android:id="@+id/gvPayment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_below="@+id/flSearch"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:divider="@android:color/transparent"
+        android:fastScrollEnabled="true"
+
+        android:nestedScrollingEnabled="true"
+        android:scrollbars="none" />
+
+
+</RelativeLayout>
