@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<androidx.cardview.widget.CardView
+    android:id="@+id/cv_index"
+    android:layout_width="35dp"
+    android:layout_height="35dp"
+    android:layout_gravity="center"
+    app:cardCornerRadius="20dp"
+    android:layout_marginStart="10dp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    >
+    <TextView
+        android:id="@+id/tv_index"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:background="#2196F3"
+        android:text="1"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+</androidx.cardview.widget.CardView>
+
+    <View
+        android:id="@+id/v_1"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toEndOf="@id/cv_index"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+<TextView
+    android:id="@+id/tv_time"
+    android:layout_width="60dp"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    android:text="9:00 10:50"
+    app:layout_constraintEnd_toStartOf="@id/v_2"
+    app:layout_constraintStart_toEndOf="@id/v_1"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"/>
+    <View
+        android:id="@+id/v_2"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/black"
+        app:layout_constraintStart_toEndOf="@id/tv_time"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_marginStart="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/v_2">
+
+    <TextView
+        android:id="@+id/tv_lesson"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Phisyk"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@id/tv_teacher"
+
+        />
+    <TextView
+        android:id="@+id/tv_teacher"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Name"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:layout_marginTop="5dp"
+        android:maxLines="1"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp"
+        android:textColor="#AB000000"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toBottomOf="@id/tv_lesson"
+        app:layout_constraintStart_toEndOf="@id/v_2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+    </LinearLayout>
+
+</LinearLayout>

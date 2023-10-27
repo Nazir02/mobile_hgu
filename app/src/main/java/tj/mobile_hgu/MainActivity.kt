@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import org.json.JSONArray
 import org.json.JSONException
@@ -36,10 +37,116 @@ class MainActivity : AppCompatActivity() {
             supportActionBar!!.setDisplayShowHomeEnabled(true)
             supportActionBar!!.title = ""
         }
+        val sessionsArray = JSONArray(jsonSessions)
+        val adapter = LessonAdapter(this, sessionsArray)
+        //cv
+        val cvMonDay = findViewById<CardView>(R.id.cv_monday)
+        val cvTuesday = findViewById<CardView>(R.id.cv_tuesday)
+        val cvWednesday = findViewById<CardView>(R.id.cv_wednesday)
+        val cvThursday = findViewById<CardView>(R.id.cv_thursday)
+        val cvFriday = findViewById<CardView>(R.id.cv_friday)
+        val cvSaturday = findViewById<CardView>(R.id.cv_saturday)
 
-        tvGetClass=findViewById(R.id.tv_get_class)
+
+        //monday
+        val listView = findViewById<ListView>(R.id.lv_monday)
+        listView.adapter = adapter
+        val btnMonDay = findViewById<Button>(R.id.btn_monday)
+        btnMonDay.setOnClickListener {
+            if (cvMonDay.visibility == View.GONE) {
+                cvMonDay.visibility = View.VISIBLE
+                cvTuesday.visibility=View.GONE
+                cvWednesday.visibility=View.GONE
+                cvThursday.visibility=View.GONE
+                cvFriday.visibility=View.GONE
+                cvSaturday.visibility=View.GONE
+            } else {
+                cvMonDay.visibility = View.GONE
+            }
+        }
+        //tuesday
+        val lvTuesday = findViewById<ListView>(R.id.lv_tuesday)
+        lvTuesday.adapter = adapter
+        val btnTuesday = findViewById<Button>(R.id.btn_tuesday)
+        btnTuesday.setOnClickListener {
+            if (cvTuesday.visibility == View.GONE) {
+                cvTuesday.visibility = View.VISIBLE
+                cvMonDay.visibility = View.GONE
+                cvWednesday.visibility=View.GONE
+                cvThursday.visibility=View.GONE
+                cvFriday.visibility=View.GONE
+                cvSaturday.visibility=View.GONE
+            } else {
+                cvTuesday.visibility = View.GONE
+            }
+        }
+        //Wednesday
+        val lvWednesday = findViewById<ListView>(R.id.lv_wednesday)
+        lvWednesday.adapter = adapter
+        val btnWednesday = findViewById<Button>(R.id.btn_wednesday)
+        btnWednesday.setOnClickListener {
+            if (cvWednesday.visibility == View.GONE) {
+                cvWednesday.visibility = View.VISIBLE
+                cvMonDay.visibility = View.GONE
+                cvTuesday.visibility=View.GONE
+                cvThursday.visibility=View.GONE
+                cvFriday.visibility=View.GONE
+                cvSaturday.visibility=View.GONE
+            } else {
+                cvWednesday.visibility = View.GONE
+            }
+        }
+        //Thursday
+        val lvThursday = findViewById<ListView>(R.id.lv_thursday)
+        lvThursday.adapter = adapter
+        val btnThursday = findViewById<Button>(R.id.btn_thursday)
+        btnThursday.setOnClickListener {
+            if (cvThursday.visibility == View.GONE) {
+                cvThursday.visibility = View.VISIBLE
+                cvMonDay.visibility = View.GONE
+                cvTuesday.visibility=View.GONE
+                cvWednesday.visibility=View.GONE
+                cvFriday.visibility=View.GONE
+                cvSaturday.visibility=View.GONE
+            } else {
+                cvThursday.visibility = View.GONE
+            }
+        }
+//Friday
+        val lvFriday = findViewById<ListView>(R.id.lv_friday)
+        lvFriday.adapter = adapter
+        val btnFriday = findViewById<Button>(R.id.btn_friday)
+        btnFriday.setOnClickListener {
+            if (cvFriday.visibility == View.GONE) {
+                cvFriday.visibility = View.VISIBLE
+                cvMonDay.visibility = View.GONE
+                cvTuesday.visibility=View.GONE
+                cvWednesday.visibility=View.GONE
+                cvThursday.visibility=View.GONE
+                cvSaturday.visibility=View.GONE
+            } else {
+                cvFriday.visibility = View.GONE
+            }
+        }
+//Saturday
+        val lvSaturday = findViewById<ListView>(R.id.lv_saturday)
+        lvSaturday.adapter = adapter
+        val btnSaturday = findViewById<Button>(R.id.btn_saturday)
+        btnSaturday.setOnClickListener {
+            if (cvSaturday.visibility == View.GONE) {
+                cvSaturday.visibility = View.VISIBLE
+                cvMonDay.visibility = View.GONE
+                cvTuesday.visibility=View.GONE
+                cvWednesday.visibility=View.GONE
+                cvThursday.visibility=View.GONE
+                cvFriday.visibility=View.GONE
+            } else {
+                cvSaturday.visibility = View.GONE
+            }
+        }
+        tvGetClass = findViewById(R.id.tv_get_class)
         tvGetClass.setOnClickListener {
-            if (jsOffices.length()>1) {
+            if (jsOffices.length() > 1) {
                 openDialogOffice()
             }
         }
@@ -80,7 +187,11 @@ class MainActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (search.text.toString() == "") {
-                    val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this@MainActivity, android.R.layout.simple_list_item_1, officeNames)
+                    val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                        this@MainActivity,
+                        android.R.layout.simple_list_item_1,
+                        officeNames
+                    )
                     lvOffice.adapter = adapter
                     return
                 }
@@ -105,7 +216,9 @@ class MainActivity : AppCompatActivity() {
             try {
                 if (jsOffices.getJSONObject(i).getString("Value").lowercase(Locale.getDefault())
                         .contains(search.lowercase(Locale.getDefault()))
-                ) { searchNames.add(jsOffices.getJSONObject(i).getString("Value")) }
+                ) {
+                    searchNames.add(jsOffices.getJSONObject(i).getString("Value"))
+                }
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
