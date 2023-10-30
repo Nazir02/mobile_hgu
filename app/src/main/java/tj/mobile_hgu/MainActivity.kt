@@ -31,7 +31,17 @@ class MainActivity : AppCompatActivity() {
     lateinit var tvGetClass: TextView
     lateinit var officeNames: ArrayList<String>
     lateinit var jsOffices: JSONArray
-    var sharedPreference: SharedPreferences? =null
+    var sharedPreference: SharedPreferences? = null
+    var lvMonday: ListView? = null
+    var lvTuesday: ListView? = null
+    var lvWednesday: ListView? = null
+    var lvThursday: ListView? = null
+    var lvFriday: ListView? = null
+    var lvSaturday: ListView? = null
+
+    companion object {
+        var sessionsMonday = JSONArray()
+    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,16 +49,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         sharedPreference = getSharedPreferences("jsonArray", Context.MODE_PRIVATE)
         openExel()
-        jsOffices = JSONObject(sharedPreference!!.getString("jsonData", "")).getJSONArray("faculties")
-            .getJSONObject(0).getJSONArray("groups")
+        jsOffices =
+            JSONObject(sharedPreference!!.getString("jsonData", "")).getJSONArray("faculties")
+                .getJSONObject(0).getJSONArray("groups")
 
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
             supportActionBar!!.setDisplayShowHomeEnabled(true)
             supportActionBar!!.title = ""
         }
-        val sessionsArray = JSONArray(jsonSessions)
-        val adapter = LessonAdapter(this, sessionsArray)
+        sessionsMonday = JSONArray(jsonSessions)
+        val adapterMonday = LessonAdapter(sessionsMonday)
         //cv
         val cvMonDay = findViewById<CardView>(R.id.cv_monday)
         val cvTuesday = findViewById<CardView>(R.id.cv_tuesday)
@@ -59,8 +70,8 @@ class MainActivity : AppCompatActivity() {
 
 
         //monday
-        val listView = findViewById<ListView>(R.id.lv_monday)
-        listView.adapter = adapter
+        lvMonday = findViewById<ListView>(R.id.lv_monday)
+        lvMonday!!.adapter = adapterMonday
         val btnMonDay = findViewById<Button>(R.id.btn_monday)
         btnMonDay.setOnClickListener {
             if (cvMonDay.visibility == View.GONE) {
@@ -75,8 +86,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         //tuesday
-        val lvTuesday = findViewById<ListView>(R.id.lv_tuesday)
-        lvTuesday.adapter = adapter
+         lvTuesday = findViewById<ListView>(R.id.lv_tuesday)
+        lvTuesday!!.adapter = adapterMonday
         val btnTuesday = findViewById<Button>(R.id.btn_tuesday)
         btnTuesday.setOnClickListener {
             if (cvTuesday.visibility == View.GONE) {
@@ -91,8 +102,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         //Wednesday
-        val lvWednesday = findViewById<ListView>(R.id.lv_wednesday)
-        lvWednesday.adapter = adapter
+         lvWednesday = findViewById<ListView>(R.id.lv_wednesday)
+        lvWednesday!!.adapter = adapterMonday
         val btnWednesday = findViewById<Button>(R.id.btn_wednesday)
         btnWednesday.setOnClickListener {
             if (cvWednesday.visibility == View.GONE) {
@@ -107,8 +118,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         //Thursday
-        val lvThursday = findViewById<ListView>(R.id.lv_thursday)
-        lvThursday.adapter = adapter
+         lvThursday = findViewById<ListView>(R.id.lv_thursday)
+        lvThursday!!.adapter = adapterMonday
         val btnThursday = findViewById<Button>(R.id.btn_thursday)
         btnThursday.setOnClickListener {
             if (cvThursday.visibility == View.GONE) {
@@ -123,8 +134,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 //Friday
-        val lvFriday = findViewById<ListView>(R.id.lv_friday)
-        lvFriday.adapter = adapter
+        lvFriday = findViewById<ListView>(R.id.lv_friday)
+        lvFriday!!.adapter = adapterMonday
         val btnFriday = findViewById<Button>(R.id.btn_friday)
         btnFriday.setOnClickListener {
             if (cvFriday.visibility == View.GONE) {
@@ -139,8 +150,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 //Saturday
-        val lvSaturday = findViewById<ListView>(R.id.lv_saturday)
-        lvSaturday.adapter = adapter
+         lvSaturday = findViewById<ListView>(R.id.lv_saturday)
+        lvSaturday!!.adapter = adapterMonday
         val btnSaturday = findViewById<Button>(R.id.btn_saturday)
         btnSaturday.setOnClickListener {
             if (cvSaturday.visibility == View.GONE) {
@@ -196,6 +207,7 @@ class MainActivity : AppCompatActivity() {
         lvOffice.setOnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
             try {
                 tvGetClass.text = jsOffices.getJSONObject(position)?.getString("name")
+                addAdapter(jsOffices.getJSONObject(position).getJSONArray("schedule"))
                 bottomSheetDialog.dismiss()
             } catch (e: JSONException) {
                 throw RuntimeException(e)
@@ -228,6 +240,15 @@ class MainActivity : AppCompatActivity() {
             )
         }
         bottomSheetDialog.show()
+    }
+
+    private fun addAdapter(jsonArray: JSONArray) {
+        lvMonday!!.adapter = LessonAdapter(jsonArray.getJSONObject(0).getJSONArray("sessions"))
+//        lvTuesday!!.adapter = LessonAdapter(jsonArray.getJSONObject(1).getJSONArray("sessions"))
+//        lvMonday!!.adapter = LessonAdapter(jsonArray.getJSONObject(0).getJSONArray("sessions"))
+//        lvMonday!!.adapter = LessonAdapter(jsonArray.getJSONObject(0).getJSONArray("sessions"))
+//        lvMonday!!.adapter = LessonAdapter(jsonArray.getJSONObject(0).getJSONArray("sessions"))
+//        lvMonday!!.adapter = LessonAdapter(jsonArray.getJSONObject(0).getJSONArray("sessions"))
     }
 
     private fun getOfficeSearch(jsOffices: JSONArray, search: String) {
