@@ -1,18 +1,20 @@
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import android.content.res.AssetManager
 import org.apache.poi.ss.usermodel.CellType
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.json.JSONArray
 import org.json.JSONObject
-import java.io.InputStream
 
-fun excelToJSON(inputStream: InputStream): JSONObject {
+fun excelToJSON(assetManager: AssetManager, fileName: String): JSONObject {
     val jsonData = JSONObject()
-    val groupsArray = JSONArray()
-
+    val facultiesArray = JSONArray()
     try {
+        val inputStream = assetManager.open(fileName)
         val workbook = XSSFWorkbook(inputStream)
         val sheet = workbook.getSheetAt(0) // Предполагается, что данные находятся в первом листе
 
-        val groupData = mutableMapOf<String, JSONObject>()
+        var currentFaculty = "Физика" // Факультет по умолчанию
+
+        val facultyData = mutableMapOf<String, JSONObject>()
 
         for (row in sheet) {
             if (row.rowNum == 0) {
@@ -20,39 +22,42 @@ fun excelToJSON(inputStream: InputStream): JSONObject {
                 continue
             }
 
-            val groupCell = row.getCell(0)
-            val groupnameCell = row.getCell(1)
-            val teacherCell = row.getCell(2)
-            val lessonCell = row.getCell(3)
-            val timeCell = row.getCell(4)
+            val codeCell = row.getCell(0)
+            val groupNameCell = row.getCell(1)
+            val lessonCell = row.getCell(2)
+            val timeCell = row.getCell(3)
+            val teacherCell = row.getCell(4)
             val dayCell = row.getCell(5)
+            val facultyCell = row.getCell(6)
 
-            val group = if (groupCell != null) {
-                when (groupCell.cellType) {
-                    CellType.STRING -> groupCell.stringCellValue
-                    CellType.NUMERIC -> groupCell.numericCellValue.toString()
+            val code = if (codeCell != null) {
+                when (codeCell.cellType) {
+                    CellType.STRING -> codeCell.stringCellValue
+                    CellType.NUMERIC -> codeCell.numericCellValue.toString()
                     else -> ""
                 }
             } else {
                 ""
             }
 
-            val groupname = if (groupnameCell != null) {
-                when (groupnameCell.cellType) {
-                    CellType.STRING -> groupnameCell.stringCellValue
-                    CellType.NUMERIC -> groupnameCell.numericCellValue.toString()
+            val groupName = if (groupNameCell != null) {
+                val code = if (codeCell != null) {
+                    when (codeCell.cellType) {
+                        CellType.STRING -> codeCell.stringCellValue
+                        CellType.NUMERIC -> codeCell.numericCellValue.toString()
+                        else -> ""
+                    }
+                } else {
+                    ""
+                }
+                val name = when (groupNameCell.cellType) {
+                    CellType.STRING -> groupNameCell.stringCellValue
+                    CellType.NUMERIC -> groupNameCell.numericCellValue.toString()
                     else -> ""
                 }
-            } else {
-                ""
-            }
-
-            val teacher = if (teacherCell != null) {
-                when (teacherCell.cellType) {
-                    CellType.STRING -> teacherCell.stringCellValue
-                    CellType.NUMERIC -> teacherCell.numericCellValue.toString()
-                    else -> ""
-                }
+                val fullString = code
+                val result = fullString.substringBefore(".")
+                "$result-$name"
             } else {
                 ""
             }
@@ -77,6 +82,16 @@ fun excelToJSON(inputStream: InputStream): JSONObject {
                 ""
             }
 
+            val teacher = if (teacherCell != null) {
+                when (teacherCell.cellType) {
+                    CellType.STRING -> teacherCell.stringCellValue
+                    CellType.NUMERIC -> teacherCell.numericCellValue.toString()
+                    else -> ""
+                }
+            } else {
+                ""
+            }
+
             val day = if (dayCell != null) {
                 when (dayCell.cellType) {
                     CellType.STRING -> dayCell.stringCellValue
@@ -87,66 +102,102 @@ fun excelToJSON(inputStream: InputStream): JSONObject {
                 ""
             }
 
-            // Проверить, существует ли уже группа с указанным именем в groupData
-            if (groupData.containsKey(group)) {
-                val groupObject = groupData[group]!!
-                val daysArray = groupObject.getJSONArray("days")
-                val dayObject = daysArray.getJSONObject(daysArray.length() - 1)
-
-                if (day == dayObject.getString("day")) {
-                    // Тот же день, добавить сессию
-                    val sessionsArray = dayObject.getJSONArray("sessions")
-                    val sessionObject = JSONObject()
-                    sessionObject.put("lesson", lesson)
-                    sessionObject.put("time", time)
-                    sessionObject.put("teacher", teacher)
-                    sessionsArray.put(sessionObject)
-                } else {
-                    // Новый день, создать новый объект для дня
-                    val newDayObject = JSONObject()
-                    newDayObject.put("day", day)
-                    val sessionsArray = JSONArray()
-                    val sessionObject = JSONObject()
-                    sessionObject.put("lesson", lesson)
-                    sessionObject.put("time", time)
-                    sessionObject.put("teacher", teacher)
-                    sessionsArray.put(sessionObject)
-                    newDayObject.put("sessions", sessionsArray)
-                    daysArray.put(newDayObject)
+            val faculty = if (facultyCell != null) {
+                when (facultyCell.cellType) {
+                    CellType.STRING -> facultyCell.stringCellValue
+                    CellType.NUMERIC -> facultyCell.numericCellValue.toString()
+                    else -> ""
                 }
             } else {
-                // Новая группа, создать новый объект группы
+                ""
+            }
+
+            if (faculty.isNotEmpty()) {
+                currentFaculty = faculty
+            }
+
+            if (facultyData.containsKey(currentFaculty)) {
+                val groupObject = facultyData[currentFaculty]!!
+                val groupArray = groupObject.getJSONArray("groups")
+                var groupExists = false
+                for (groupIndex in 0 until groupArray.length()) {
+                    val group = groupArray.getJSONObject(groupIndex)
+                    if (group.getString("name") == groupName) {
+                        val daysObject = group.getJSONArray("schedule")
+                        var dayExists = false
+                        for (dayIndex in 0 until daysObject.length()) {
+                            val dayObject = daysObject.getJSONObject(dayIndex)
+                            if (dayObject.getString("day") == day) {
+                                val sessionsArray = dayObject.getJSONArray("sessions")
+                                val sessionObject = JSONObject()
+                                sessionObject.put("time", time)
+                                sessionObject.put("teacher", teacher)
+                                sessionObject.put("lesson", lesson)
+                                sessionsArray.put(sessionObject)
+                                dayExists = true
+                            }
+                        }
+                        if (!dayExists) {
+                            val dayObject = JSONObject()
+                            dayObject.put("day", day)
+                            val sessionsArray = JSONArray()
+                            val sessionObject = JSONObject()
+                            sessionObject.put("time", time)
+                            sessionObject.put("teacher", teacher)
+                            sessionObject.put("lesson", lesson)
+                            sessionsArray.put(sessionObject)
+                            dayObject.put("sessions", sessionsArray)
+                            daysObject.put(dayObject)
+                        }
+                        groupExists = true
+                    }
+                }
+                if (!groupExists) {
+                    val groupObject = JSONObject()
+                    groupObject.put("name", groupName)
+                    val daysArray = JSONArray()
+                    val dayObject = JSONObject()
+                    dayObject.put("day", day)
+                    val sessionsArray = JSONArray()
+                    val sessionObject = JSONObject()
+                    sessionObject.put("time", time)
+                    sessionObject.put("teacher", teacher)
+                    sessionObject.put("lesson", lesson)
+                    sessionsArray.put(sessionObject)
+                    dayObject.put("sessions", sessionsArray)
+                    daysArray.put(dayObject)
+                    groupObject.put("schedule", daysArray)
+                    groupArray.put(groupObject)
+                }
+            } else {
                 val groupObject = JSONObject()
-                groupObject.put("groupname", group)
+                groupObject.put("name", currentFaculty)
+                val groupsArray = JSONArray()
+                val groupArray = JSONObject()
+                groupArray.put("name", groupName)
                 val daysArray = JSONArray()
                 val dayObject = JSONObject()
                 dayObject.put("day", day)
                 val sessionsArray = JSONArray()
                 val sessionObject = JSONObject()
-                sessionObject.put("lesson", lesson)
                 sessionObject.put("time", time)
                 sessionObject.put("teacher", teacher)
+                sessionObject.put("lesson", lesson)
                 sessionsArray.put(sessionObject)
                 dayObject.put("sessions", sessionsArray)
                 daysArray.put(dayObject)
-                groupObject.put("days", daysArray)
-                groupData[group] = groupObject
+                groupArray.put("schedule", daysArray)
+                groupsArray.put(groupArray)
+                groupObject.put("groups", groupsArray)
+                facultyData[currentFaculty] = groupObject
             }
         }
-
-        // Добавить объекты групп в массив groupsArray
-        for (groupObject in groupData.values) {
-            groupsArray.put(groupObject)
+        for (facultyName in facultyData.keys) {
+            facultiesArray.put(facultyData[facultyName])
         }
-
-        workbook.close()
-
-        if (groupsArray.length() > 0) {
-            jsonData.put("groups", groupsArray)
-        }
+        jsonData.put("faculties", facultiesArray)
     } catch (e: Exception) {
         e.printStackTrace()
     }
-
     return jsonData
 }

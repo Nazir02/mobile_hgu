@@ -1,6 +1,8 @@
 package tj.mobile_hgu
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
@@ -20,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import excelToJSON
 import org.json.JSONArray
 import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 import java.util.Locale
 
@@ -28,11 +31,16 @@ class MainActivity : AppCompatActivity() {
     lateinit var tvGetClass: TextView
     lateinit var officeNames: ArrayList<String>
     lateinit var jsOffices: JSONArray
+    var sharedPreference: SharedPreferences? =null
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sharedPreference = getSharedPreferences("jsonArray", Context.MODE_PRIVATE)
+        openExel()
+        jsOffices = JSONObject(sharedPreference!!.getString("jsonData", "")).getJSONArray("faculties")
+            .getJSONObject(0).getJSONArray("groups")
 
         if (supportActionBar != null) {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -57,11 +65,11 @@ class MainActivity : AppCompatActivity() {
         btnMonDay.setOnClickListener {
             if (cvMonDay.visibility == View.GONE) {
                 cvMonDay.visibility = View.VISIBLE
-                cvTuesday.visibility=View.GONE
-                cvWednesday.visibility=View.GONE
-                cvThursday.visibility=View.GONE
-                cvFriday.visibility=View.GONE
-                cvSaturday.visibility=View.GONE
+                cvTuesday.visibility = View.GONE
+                cvWednesday.visibility = View.GONE
+                cvThursday.visibility = View.GONE
+                cvFriday.visibility = View.GONE
+                cvSaturday.visibility = View.GONE
             } else {
                 cvMonDay.visibility = View.GONE
             }
@@ -74,10 +82,10 @@ class MainActivity : AppCompatActivity() {
             if (cvTuesday.visibility == View.GONE) {
                 cvTuesday.visibility = View.VISIBLE
                 cvMonDay.visibility = View.GONE
-                cvWednesday.visibility=View.GONE
-                cvThursday.visibility=View.GONE
-                cvFriday.visibility=View.GONE
-                cvSaturday.visibility=View.GONE
+                cvWednesday.visibility = View.GONE
+                cvThursday.visibility = View.GONE
+                cvFriday.visibility = View.GONE
+                cvSaturday.visibility = View.GONE
             } else {
                 cvTuesday.visibility = View.GONE
             }
@@ -90,10 +98,10 @@ class MainActivity : AppCompatActivity() {
             if (cvWednesday.visibility == View.GONE) {
                 cvWednesday.visibility = View.VISIBLE
                 cvMonDay.visibility = View.GONE
-                cvTuesday.visibility=View.GONE
-                cvThursday.visibility=View.GONE
-                cvFriday.visibility=View.GONE
-                cvSaturday.visibility=View.GONE
+                cvTuesday.visibility = View.GONE
+                cvThursday.visibility = View.GONE
+                cvFriday.visibility = View.GONE
+                cvSaturday.visibility = View.GONE
             } else {
                 cvWednesday.visibility = View.GONE
             }
@@ -106,10 +114,10 @@ class MainActivity : AppCompatActivity() {
             if (cvThursday.visibility == View.GONE) {
                 cvThursday.visibility = View.VISIBLE
                 cvMonDay.visibility = View.GONE
-                cvTuesday.visibility=View.GONE
-                cvWednesday.visibility=View.GONE
-                cvFriday.visibility=View.GONE
-                cvSaturday.visibility=View.GONE
+                cvTuesday.visibility = View.GONE
+                cvWednesday.visibility = View.GONE
+                cvFriday.visibility = View.GONE
+                cvSaturday.visibility = View.GONE
             } else {
                 cvThursday.visibility = View.GONE
             }
@@ -122,10 +130,10 @@ class MainActivity : AppCompatActivity() {
             if (cvFriday.visibility == View.GONE) {
                 cvFriday.visibility = View.VISIBLE
                 cvMonDay.visibility = View.GONE
-                cvTuesday.visibility=View.GONE
-                cvWednesday.visibility=View.GONE
-                cvThursday.visibility=View.GONE
-                cvSaturday.visibility=View.GONE
+                cvTuesday.visibility = View.GONE
+                cvWednesday.visibility = View.GONE
+                cvThursday.visibility = View.GONE
+                cvSaturday.visibility = View.GONE
             } else {
                 cvFriday.visibility = View.GONE
             }
@@ -138,10 +146,10 @@ class MainActivity : AppCompatActivity() {
             if (cvSaturday.visibility == View.GONE) {
                 cvSaturday.visibility = View.VISIBLE
                 cvMonDay.visibility = View.GONE
-                cvTuesday.visibility=View.GONE
-                cvWednesday.visibility=View.GONE
-                cvThursday.visibility=View.GONE
-                cvFriday.visibility=View.GONE
+                cvTuesday.visibility = View.GONE
+                cvWednesday.visibility = View.GONE
+                cvThursday.visibility = View.GONE
+                cvFriday.visibility = View.GONE
             } else {
                 cvSaturday.visibility = View.GONE
             }
@@ -149,27 +157,17 @@ class MainActivity : AppCompatActivity() {
 
         tvGetClass = findViewById(R.id.tv_get_class)
         tvGetClass.setOnClickListener {
-            openExel()
-//            if (jsOffices.length() > 1) {
-//                openDialogOffice()
-//            }
+            openDialogOffice()
         }
     }
-    fun openExel(){
+
+    fun openExel() {
         try {
-            // Откройте файл из папки assets
-            val inputStream = assets.open("dars_v2.xlsx")
-
-            // Преобразуйте Excel-файл в JSON
-            val jsonData = excelToJSON(inputStream)
-
-            // Теперь у вас есть JSON-структура с данными
-            // jsonData можно использовать в вашем приложении
-            // например, вывести его в лог
+            val jsonData = excelToJSON(assets, "dars_v2.xlsx")
             println(jsonData.toString(2))
-
-            // Не забудьте закрыть inputStream, когда закончите использовать его
-            inputStream.close()
+            val editor = sharedPreference!!.edit()
+            editor.putString("jsonData", jsonData.toString())
+            editor.apply()
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -187,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         officeNames = ArrayList<String>()
         for (i in 0 until jsOffices.length()) {
             try {
-                officeNames.add(jsOffices.getJSONObject(i).getString("Value"))
+                officeNames.add(jsOffices.getJSONObject(i).getString("name"))
             } catch (e: JSONException) {
                 throw RuntimeException(e)
             }
@@ -197,7 +195,7 @@ class MainActivity : AppCompatActivity() {
         lvOffice.adapter = adapter
         lvOffice.setOnItemClickListener { parent: AdapterView<*>?, view: View?, position: Int, id: Long ->
             try {
-                tvGetClass.text = jsOffices.getJSONObject(position)?.getString("Value")
+                tvGetClass.text = jsOffices.getJSONObject(position)?.getString("name")
                 bottomSheetDialog.dismiss()
             } catch (e: JSONException) {
                 throw RuntimeException(e)
@@ -237,10 +235,10 @@ class MainActivity : AppCompatActivity() {
         val searchNames = java.util.ArrayList<String>()
         for (i in 0 until jsOffices.length()) {
             try {
-                if (jsOffices.getJSONObject(i).getString("Value").lowercase(Locale.getDefault())
+                if (jsOffices.getJSONObject(i).getString("name").lowercase(Locale.getDefault())
                         .contains(search.lowercase(Locale.getDefault()))
                 ) {
-                    searchNames.add(jsOffices.getJSONObject(i).getString("Value"))
+                    searchNames.add(jsOffices.getJSONObject(i).getString("name"))
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
