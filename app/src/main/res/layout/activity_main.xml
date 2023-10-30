@@ -30,14 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#00BCD4"
-            android:gravity="center"
-            android:text="Неделя"
-            android:textColor="@color/black" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_monday"
@@ -55,20 +47,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_get_class" />
-<androidx.cardview.widget.CardView
-    android:id="@+id/cv_monday"
-    android:layout_width="wrap_content"
-    android:layout_margin="10dp"
-    android:visibility="gone"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="14dp">
-   <ListView
-       android:id="@+id/lv_monday"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:scrollbars="none"
-       tools:listitem="@layout/item_lesson"/>
-</androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_monday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            app:cardCornerRadius="14dp">
+
+            <ListView
+                android:id="@+id/lv_monday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                tools:listitem="@layout/item_lesson" />
+        </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_tuesday"
@@ -86,19 +80,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_get_class" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_tuesday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:visibility="gone"
-            android:layout_height="wrap_content"
             app:cardCornerRadius="14dp">
+
             <ListView
                 android:id="@+id/lv_tuesday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                tools:listitem="@layout/item_lesson"/>
+                tools:listitem="@layout/item_lesson" />
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton
@@ -117,19 +113,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_get_class" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_wednesday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:visibility="gone"
-            android:layout_height="wrap_content"
             app:cardCornerRadius="14dp">
+
             <ListView
                 android:id="@+id/lv_wednesday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                tools:listitem="@layout/item_lesson"/>
+                tools:listitem="@layout/item_lesson" />
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton
@@ -148,19 +146,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_get_class" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_thursday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:visibility="gone"
-            android:layout_height="wrap_content"
             app:cardCornerRadius="14dp">
+
             <ListView
                 android:id="@+id/lv_thursday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                tools:listitem="@layout/item_lesson"/>
+                tools:listitem="@layout/item_lesson" />
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton
@@ -179,19 +179,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_get_class" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_friday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:visibility="gone"
-            android:layout_height="wrap_content"
             app:cardCornerRadius="14dp">
+
             <ListView
                 android:id="@+id/lv_friday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                tools:listitem="@layout/item_lesson"/>
+                tools:listitem="@layout/item_lesson" />
         </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton
@@ -210,19 +212,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_get_class" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_saturday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:visibility="gone"
-            android:layout_height="wrap_content"
             app:cardCornerRadius="14dp">
+
             <ListView
                 android:id="@+id/lv_saturday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
-                tools:listitem="@layout/item_lesson"/>
+                tools:listitem="@layout/item_lesson" />
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

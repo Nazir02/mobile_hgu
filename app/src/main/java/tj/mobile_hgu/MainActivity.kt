@@ -17,8 +17,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import excelToJSON
 import org.json.JSONArray
 import org.json.JSONException
+import java.io.IOException
 import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
@@ -144,11 +146,32 @@ class MainActivity : AppCompatActivity() {
                 cvSaturday.visibility = View.GONE
             }
         }
+
         tvGetClass = findViewById(R.id.tv_get_class)
         tvGetClass.setOnClickListener {
-            if (jsOffices.length() > 1) {
-                openDialogOffice()
-            }
+            openExel()
+//            if (jsOffices.length() > 1) {
+//                openDialogOffice()
+//            }
+        }
+    }
+    fun openExel(){
+        try {
+            // Откройте файл из папки assets
+            val inputStream = assets.open("dars_v2.xlsx")
+
+            // Преобразуйте Excel-файл в JSON
+            val jsonData = excelToJSON(inputStream)
+
+            // Теперь у вас есть JSON-структура с данными
+            // jsonData можно использовать в вашем приложении
+            // например, вывести его в лог
+            println(jsonData.toString(2))
+
+            // Не забудьте закрыть inputStream, когда закончите использовать его
+            inputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
