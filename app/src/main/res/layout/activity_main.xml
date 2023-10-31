@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F1F6FA"
+    android:clipToPadding="false"
+    android:paddingBottom="60dp"
     android:fillViewport="true"
     tools:context=".MainActivity">
 

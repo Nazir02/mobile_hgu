@@ -7,14 +7,14 @@ var jsDataAll=JSONArray()
 val jsonSessions = """
 [
   {
-    "lesson": "ТАРБИЯИ ҶИСМОНӢ",
+    "lesson": "нет расписание",
     "time": "8:00- 8:50",
-    "teacher": "БОЙМАТОВ Д."
+    "teacher": "--"
   },
   {
-    "lesson": "ТАРБИЯИТАРБИЯИТАРБИЯИ ҶИСМОНӢҶИСМОНӢ",
+    "lesson": "нет расписание",
     "time": "8:00- 8:50",
-    "teacher": "БОЙМАТОВ Д."
+    "teacher": "--"
   }
 ]
 """
