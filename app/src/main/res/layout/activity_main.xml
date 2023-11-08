@@ -15,16 +15,44 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#6BCCCACA"
+            app:title="Расписание">
+            <LinearLayout
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginEnd="20dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:layout_gravity="end">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/baseline_person_outline_24"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:text="Admin"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
         <TextView
             android:id="@+id/tv_get_class"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="30dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/rounded_transfer_states"
             android:drawableEnd="@drawable/arrow_bottom_black"
             android:padding="10dp"
+            android:gravity="center_vertical"
             android:text="Выберите свой групу "
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -43,7 +71,7 @@
             android:background="@drawable/rounded_transfer_states"
             android:gravity="center"
             android:text="Понеделник"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold"
             app:backgroundTint="#3F51B5"
@@ -78,7 +106,7 @@
             android:gravity="center"
             android:text="Вторник"
             app:backgroundTint="#3F51B5"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +140,7 @@
             android:gravity="center"
             android:text="Среда"
             app:backgroundTint="#3F51B5"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -146,7 +174,7 @@
             android:gravity="center"
             android:text="Четверг"
             app:backgroundTint="#3F51B5"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -180,7 +208,7 @@
             android:gravity="center"
             android:text="Пятница"
             app:backgroundTint="#3F51B5"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -214,7 +242,7 @@
             android:gravity="center"
             android:text="Суббота"
             app:backgroundTint="#3F51B5"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
